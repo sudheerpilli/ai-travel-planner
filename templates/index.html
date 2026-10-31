@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Travel Planner</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="/">✈ TripWise</a>
+    <span class="tagline">Your personal travel planner</span>
+  </header>
+  <main class="container">
+    <section class="hero">
+      <p class="eyebrow">TRAVEL SMARTER</p>
+      <h1>Plan your next adventure.</h1>
+      <p>Build a day-by-day itinerary around your destination, budget, dates and interests.</p>
+    </section>
+    <section class="planner card">
+      <form id="planner-form">
+        <div class="field wide">
+          <label for="destination">Where do you want to go?</label>
+          <input id="destination" name="destination" placeholder="e.g. Hyderabad, Goa, Tokyo" required>
+        </div>
+        <div class="field">
+          <label for="start_date">Start date</label>
+          <input type="date" id="start_date" name="start_date" required>
+        </div>
+        <div class="field">
+          <label for="end_date">End date</label>
+          <input type="date" id="end_date" name="end_date" required>
+        </div>
+        <div class="field">
+          <label for="budget">Total budget</label>
+          <input type="number" id="budget" min="1" step="1" value="25000" required>
+        </div>
+        <div class="field">
+          <label for="currency">Currency</label>
+          <select id="currency">
+            <option value="INR">INR (₹)</option><option value="USD">USD ($)</option>
+            <option value="EUR">EUR (€)</option><option value="GBP">GBP (£)</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="travelers">Number of travelers</label>
+          <input type="number" id="travelers" min="1" max="30" value="2" required>
+        </div>
+        <div class="field wide">
+          <span class="label">What do you enjoy?</span>
+          <div class="interests">
+            <label><input type="checkbox" name="interest" value="culture" checked> 🏛 Culture</label>
+            <label><input type="checkbox" name="interest" value="nature" checked> 🌿 Nature</label>
+            <label><input type="checkbox" name="interest" value="food" checked> 🍜 Food</label>
+            <label><input type="checkbox" name="interest" value="adventure"> 🧗 Adventure</label>
+            <label><input type="checkbox" name="interest" value="shopping"> 🛍 Shopping</label>
+            <label><input type="checkbox" name="interest" value="family"> 👨‍👩‍👧 Family</label>
+          </div>
+        </div>
+        <div class="wide actions">
+          <button id="submit-btn" type="submit">Create my itinerary <span>→</span></button>
+          <p class="small">No account required · Estimates are indicative</p>
+        </div>
+      </form>
+      <div id="status" role="status" aria-live="polite"></div>
+    </section>
+    <section id="results" class="results" hidden></section>
+    <footer>TripWise · A learning project built with Python, Flask, HTML, CSS and JavaScript</footer>
+  </main>
+  <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>

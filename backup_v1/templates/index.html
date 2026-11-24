@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TripWise — AI Travel Planner</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+  <!-- ═══════════════════════ NAVBAR ═══════════════════════ -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-inner">
+      <a class="nav-logo" href="/">
+        <span class="logo-icon">✈</span>
+        <span class="logo-text">TripWise</span>
+      </a>
+      <div class="nav-links">
+        <a href="#planner" class="nav-link">Plan Trip</a>
+        <a href="#features" class="nav-link">Features</a>
+        <a href="#how-it-works" class="nav-link">How It Works</a>
+      </div>
+      <a href="#planner" class="nav-cta">Start Planning →</a>
+      <button class="nav-hamburger" id="hamburger" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+    <div class="nav-mobile-menu" id="mobile-menu">
+      <a href="#planner" class="mobile-link">Plan Trip</a>
+      <a href="#features" class="mobile-link">Features</a>
+      <a href="#how-it-works" class="mobile-link">How It Works</a>
+      <a href="#planner" class="mobile-cta">Start Planning →</a>
+    </div>
+  </nav>
+
+  <!-- ═══════════════════════ HERO ═══════════════════════ -->
+  <section class="hero" id="hero">
+    <!-- Ambient background blobs -->
+    <div class="hero-blob blob-1"></div>
+    <div class="hero-blob blob-2"></div>
+    <div class="hero-blob blob-3"></div>
+    <!-- Floating grid -->
+    <div class="hero-grid"></div>
+
+    <div class="hero-content">
+      <div class="hero-badge">
+        <span class="badge-dot"></span>
+        <span>AI-Powered Travel Planning</span>
+      </div>
+      <h1 class="hero-title">
+        Your Next<br>
+        <span class="hero-gradient-text">Adventure</span><br>
+        Starts Here.
+      </h1>
+      <p class="hero-sub">Plan smarter. Explore further. Experience more.<br>Get a day-by-day itinerary in seconds —
+        completely free.</p>
+      <div class="hero-actions">
+        <a href="#planner" class="btn-primary hero-btn">
+          <span>Create Your Itinerary</span>
+          <span class="btn-arrow">→</span>
+        </a>
+        <div class="hero-trust">
+          <div class="trust-avatars">
+            <div class="avatar av1">🧳</div>
+            <div class="avatar av2">🌍</div>
+            <div class="avatar av3">✈️</div>
+          </div>
+          <span class="trust-text">Trusted by thousands of travellers</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Floating 3D cards -->
+    <div class="hero-cards-wrapper">
+      <div class="float-card card-tokyo" data-tilt>
+        <div class="fcard-img">🗼</div>
+        <div class="fcard-body">
+          <div class="fcard-title">Tokyo, Japan</div>
+          <div class="fcard-tag">Culture · Food · Adventure</div>
+          <div class="fcard-rating">⭐ 4.9 · 7 days</div>
+        </div>
+      </div>
+      <div class="float-card card-santorini" data-tilt>
+        <div class="fcard-img">🏛️</div>
+        <div class="fcard-body">
+          <div class="fcard-title">Santorini, Greece</div>
+          <div class="fcard-tag">Nature · Romance</div>
+          <div class="fcard-rating">⭐ 4.8 · 5 days</div>
+        </div>
+      </div>
+      <div class="float-card card-bali" data-tilt>
+        <div class="fcard-img">🌴</div>
+        <div class="fcard-body">
+          <div class="fcard-title">Bali, Indonesia</div>
+          <div class="fcard-tag">Nature · Food</div>
+          <div class="fcard-rating">⭐ 4.7 · 6 days</div>
+        </div>
+      </div>
+
+      <!-- Floating stats pill -->
+      <div class="float-pill pill-1">
+        <span class="pill-icon">📍</span>
+        <div>
+          <div class="pill-value">150+</div>
+          <div class="pill-label">Destinations</div>
+        </div>
+      </div>
+      <div class="float-pill pill-2">
+        <span class="pill-icon">⚡</span>
+        <div>
+          <div class="pill-value">Free</div>
+          <div class="pill-label">No signup needed</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scroll cue -->
+    <div class="scroll-cue">
+      <span>Scroll to plan</span>
+      <div class="scroll-arrow"></div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════ FEATURES ═══════════════════════ -->
+  <section class="features-section" id="features">
+    <div class="section-container">
+      <p class="section-eyebrow">WHY TRIPWISE</p>
+      <h2 class="section-title">Everything you need for the <span class="gradient-word">perfect trip</span></h2>
+      <div class="features-grid">
+        <div class="feature-card" data-reveal>
+          <div class="feat-icon">🗓️</div>
+          <h3>Day-by-Day Itinerary</h3>
+          <p>Morning, afternoon and evening activities planned for every single day of your trip.</p>
+        </div>
+        <div class="feature-card" data-reveal>
+          <div class="feat-icon">💰</div>
+          <h3>Budget Breakdown</h3>
+          <p>Smart cost estimates split across transport, accommodation, food and attractions.</p>
+        </div>
+        <div class="feature-card" data-reveal>
+          <div class="feat-icon">🗺️</div>
+          <h3>Google Maps Links</h3>
+          <p>Every suggested location has a direct Google Maps search link for easy navigation.</p>
+        </div>
+        <div class="feature-card" data-reveal>
+          <div class="feat-icon">🎯</div>
+          <h3>Interest-Based Planning</h3>
+          <p>Culture, nature, food, adventure, shopping or family — your itinerary matches your vibe.</p>
+        </div>
+        <div class="feature-card" data-reveal>
+          <div class="feat-icon">🌐</div>
+          <h3>Live Attraction Data</h3>
+          <p>Combines Wikipedia data with curated recommendations for real, specific places to visit.</p>
+        </div>
+        <div class="feature-card" data-reveal>
+          <div class="feat-icon">📄</div>
+          <h3>PDF Export</h3>
+          <p>Print or save your full itinerary as a PDF to take offline on your adventure.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════ HOW IT WORKS ═══════════════════════ -->
+  <section class="how-section" id="how-it-works">
+    <div class="section-container">
+      <p class="section-eyebrow">HOW IT WORKS</p>
+      <h2 class="section-title">Plan your dream trip in <span class="gradient-word">3 simple steps</span></h2>
+      <div class="steps-row">
+        <div class="step-card" data-reveal>
+          <div class="step-num">01</div>
+          <div class="step-icon">📍</div>
+          <h3>Enter Your Details</h3>
+          <p>Tell us where you're going, when, how many people and what your budget is.</p>
+        </div>
+        <div class="step-connector"></div>
+        <div class="step-card" data-reveal>
+          <div class="step-num">02</div>
+          <div class="step-icon">🎨</div>
+          <h3>Choose Your Interests</h3>
+          <p>Select what excites you — culture, food, adventure, nature, shopping or family activities.</p>
+        </div>
+        <div class="step-connector"></div>
+        <div class="step-card" data-reveal>
+          <div class="step-num">03</div>
+          <div class="step-icon">✨</div>
+          <h3>Get Your Itinerary</h3>
+          <p>Receive a full day-by-day itinerary with activities, costs, and Google Maps links instantly.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════ PLANNER FORM ═══════════════════════ -->
+  <section class="planner-section" id="planner">
+    <!-- Ambient blobs -->
+    <div class="planner-blob blob-a"></div>
+    <div class="planner-blob blob-b"></div>
+
+    <div class="section-container">
+      <p class="section-eyebrow">AI TRAVEL PLANNER</p>
+      <h2 class="section-title">Where are you going <span class="gradient-word">next?</span></h2>
+      <p class="section-sub">Fill in your details below and get a personalised itinerary in seconds.</p>
+
+      <div class="planner-card glass-card">
+        <form id="planner-form" novalidate>
+
+          <!-- Destination -->
+          <div class="form-group full-width">
+            <label class="form-label" for="destination">
+              <span class="label-icon">📍</span> Destination
+            </label>
+            <div class="input-wrap">
+              <span class="input-icon">🔍</span>
+              <input id="destination" name="destination" type="text" class="form-input"
+                placeholder="e.g. Tokyo, Goa, Paris, New York…" required autocomplete="off">
+            </div>
+          </div>
+
+          <!-- Dates -->
+          <div class="form-group">
+            <label class="form-label" for="start_date">
+              <span class="label-icon">📅</span> Start Date
+            </label>
+            <div class="input-wrap">
+              <span class="input-icon">📆</span>
+              <input type="date" id="start_date" name="start_date" class="form-input" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="end_date">
+              <span class="label-icon">📅</span> End Date
+            </label>
+            <div class="input-wrap">
+              <span class="input-icon">📆</span>
+              <input type="date" id="end_date" name="end_date" class="form-input" required>
+            </div>
+          </div>
+
+          <!-- Budget & Currency -->
+          <div class="form-group">
+            <label class="form-label" for="budget">
+              <span class="label-icon">💰</span> Total Budget
+            </label>
+            <div class="input-wrap">
+              <span class="input-icon" id="currency-symbol">₹</span>
+              <input type="number" id="budget" name="budget" class="form-input budget-input" min="1" step="1"
+                value="25000" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="currency">
+              <span class="label-icon">🌐</span> Currency
+            </label>
+            <div class="input-wrap select-wrap">
+              <span class="input-icon">💱</span>
+              <select id="currency" class="form-input form-select">
+                <option value="INR">INR (₹) — Indian Rupee</option>
+                <option value="USD">USD ($) — US Dollar</option>
+                <option value="EUR">EUR (€) — Euro</option>
+                <option value="GBP">GBP (£) — British Pound</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Travelers -->
+          <div class="form-group">
+            <label class="form-label" for="travelers">
+              <span class="label-icon">👥</span> Travelers
+            </label>
+            <div class="traveler-counter">
+              <button type="button" class="counter-btn" id="dec-travelers" aria-label="Decrease travelers">−</button>
+              <input type="number" id="travelers" name="travelers" class="counter-display" min="1" max="30" value="2"
+                required readonly>
+              <button type="button" class="counter-btn" id="inc-travelers" aria-label="Increase travelers">+</button>
+            </div>
+          </div>
+
+          <!-- Interests -->
+          <div class="form-group full-width interests-group">
+            <label class="form-label">
+              <span class="label-icon">🎯</span> What do you enjoy? <span class="label-hint">(Select all that
+                apply)</span>
+            </label>
+            <div class="interests-grid">
+              <label class="interest-chip checked" data-interest="culture">
+                <input type="checkbox" name="interest" value="culture" checked>
+                <span class="chip-icon">🏛️</span>
+                <span class="chip-text">Culture</span>
+                <span class="chip-check">✓</span>
+              </label>
+              <label class="interest-chip checked" data-interest="nature">
+                <input type="checkbox" name="interest" value="nature" checked>
+                <span class="chip-icon">🌿</span>
+                <span class="chip-text">Nature</span>
+                <span class="chip-check">✓</span>
+              </label>
+              <label class="interest-chip checked" data-interest="food">
+                <input type="checkbox" name="interest" value="food" checked>
+                <span class="chip-icon">🍜</span>
+                <span class="chip-text">Food</span>
+                <span class="chip-check">✓</span>
+              </label>
+              <label class="interest-chip" data-interest="adventure">
+                <input type="checkbox" name="interest" value="adventure">
+                <span class="chip-icon">🧗</span>
+                <span class="chip-text">Adventure</span>
+                <span class="chip-check">✓</span>
+              </label>
+              <label class="interest-chip" data-interest="shopping">
+                <input type="checkbox" name="interest" value="shopping">
+                <span class="chip-icon">🛍️</span>
+                <span class="chip-text">Shopping</span>
+                <span class="chip-check">✓</span>
+              </label>
+              <label class="interest-chip" data-interest="family">
+                <input type="checkbox" name="interest" value="family">
+                <span class="chip-icon">👨‍👩‍👧</span>
+                <span class="chip-text">Family</span>
+                <span class="chip-check">✓</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Submit -->
+          <div class="form-group full-width submit-group">
+            <button id="submit-btn" type="submit" class="btn-submit">
+              <span class="btn-text">Create My Itinerary</span>
+              <span class="btn-arrow-icon">→</span>
+              <span class="btn-loader" hidden>
+                <span class="loader-dot"></span>
+                <span class="loader-dot"></span>
+                <span class="loader-dot"></span>
+              </span>
+            </button>
+            <p class="form-disclaimer">✨ No account required · Budget estimates are indicative</p>
+          </div>
+
+        </form>
+        <div id="status" role="status" aria-live="polite" class="status-box"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════ RESULTS ═══════════════════════ -->
+  <section id="results" class="results-section" hidden>
+    <div class="section-container" id="results-inner"></div>
+  </section>
+
+  <!-- ═══════════════════════ FOOTER ═══════════════════════ -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <a class="nav-logo" href="/">
+          <span class="logo-icon">✈</span>
+          <span class="logo-text">TripWise</span>
+        </a>
+        <p>Your AI-powered travel planning companion. Plan smarter, explore further.</p>
+      </div>
+      <div class="footer-links">
+        <a href="#planner">Plan a Trip</a>
+        <a href="#features">Features</a>
+        <a href="#how-it-works">How It Works</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 TripWise · Built with Python, Flask &amp; JavaScript</span>
+      <span>Estimates are indicative and not live prices.</span>
+    </div>
+  </footer>
+
+  <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+
+</html>

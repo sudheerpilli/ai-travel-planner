@@ -1,72 +1,571 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AI Travel Planner</title>
+  <title>TripWise — AI Travel Planning Chatbot</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <!-- Leaflet Interactive Maps (OpenStreetMap, no API key required) -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
+
 <body>
-  <header class="topbar">
-    <a class="brand" href="/">✈ TripWise</a>
-    <span class="tagline">Your personal travel planner</span>
-  </header>
-  <main class="container">
-    <section class="hero">
-      <p class="eyebrow">TRAVEL SMARTER</p>
-      <h1>Plan your next adventure.</h1>
-      <p>Build a day-by-day itinerary around your destination, budget, dates and interests.</p>
-    </section>
-    <section class="planner card">
-      <form id="planner-form">
-        <div class="field wide">
-          <label for="destination">Where do you want to go?</label>
-          <input id="destination" name="destination" placeholder="e.g. Hyderabad, Goa, Tokyo" required>
-        </div>
-        <div class="field">
-          <label for="start_date">Start date</label>
-          <input type="date" id="start_date" name="start_date" required>
-        </div>
-        <div class="field">
-          <label for="end_date">End date</label>
-          <input type="date" id="end_date" name="end_date" required>
-        </div>
-        <div class="field">
-          <label for="budget">Total budget</label>
-          <input type="number" id="budget" min="1" step="1" value="25000" required>
-        </div>
-        <div class="field">
-          <label for="currency">Currency</label>
-          <select id="currency">
-            <option value="INR">INR (₹)</option><option value="USD">USD ($)</option>
-            <option value="EUR">EUR (€)</option><option value="GBP">GBP (£)</option>
-          </select>
-        </div>
-        <div class="field">
-          <label for="travelers">Number of travelers</label>
-          <input type="number" id="travelers" min="1" max="30" value="2" required>
-        </div>
-        <div class="field wide">
-          <span class="label">What do you enjoy?</span>
-          <div class="interests">
-            <label><input type="checkbox" name="interest" value="culture" checked> 🏛 Culture</label>
-            <label><input type="checkbox" name="interest" value="nature" checked> 🌿 Nature</label>
-            <label><input type="checkbox" name="interest" value="food" checked> 🍜 Food</label>
-            <label><input type="checkbox" name="interest" value="adventure"> 🧗 Adventure</label>
-            <label><input type="checkbox" name="interest" value="shopping"> 🛍 Shopping</label>
-            <label><input type="checkbox" name="interest" value="family"> 👨‍👩‍👧 Family</label>
+
+  <!-- ═══════════════════════ NAVBAR ═══════════════════════ -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-inner">
+      <a class="nav-logo" href="/">
+        <span class="logo-icon">✈</span>
+        <span class="logo-text">TripWise</span>
+        <span class="logo-badge">AI 2.0</span>
+      </a>
+      <div class="nav-links">
+        <a href="#planner" class="nav-link">Plan Trip</a>
+        <a href="#features" class="nav-link">Features</a>
+        <a href="#how-it-works" class="nav-link">How It Works</a>
+        <button class="nav-link nav-btn-link" id="nav-saved-trips-btn">Saved Trips</button>
+      </div>
+      <div class="nav-actions">
+        <button class="nav-cta" id="open-chat-nav-btn">💬 AI Assistant</button>
+        <button class="nav-hamburger" id="hamburger" aria-label="Toggle menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+    <div class="nav-mobile-menu" id="mobile-menu">
+      <a href="#planner" class="mobile-link">Plan Trip</a>
+      <a href="#features" class="mobile-link">Features</a>
+      <a href="#how-it-works" class="mobile-link">How It Works</a>
+      <button class="mobile-link" id="mobile-saved-trips-btn">Saved Trips</button>
+      <button class="mobile-cta" id="mobile-chat-btn">💬 Open AI Assistant</button>
+    </div>
+  </nav>
+
+  <!-- ═══════════════════════ HERO ═══════════════════════ -->
+  <section class="hero" id="hero">
+    <div class="hero-blob blob-1"></div>
+    <div class="hero-blob blob-2"></div>
+    <div class="hero-blob blob-3"></div>
+    <div class="hero-grid"></div>
+
+    <div class="hero-content">
+      <div class="hero-badge">
+        <span class="badge-dot"></span>
+        <span>Accurate Budget · Verified Attractions · Live Weather & Routing</span>
+      </div>
+      <h1 class="hero-title">
+        Your Next<br>
+        <span class="hero-gradient-text">Adventure</span><br>
+        Starts Here.
+      </h1>
+      <p class="hero-sub">
+        Plan smarter. Explore further. Experience more.<br>
+        Get realistic travel expenses, 5-way transport comparison, day-by-day itineraries and an AI travel assistant.
+      </p>
+      <div class="hero-actions">
+        <a href="#planner" class="btn-primary hero-btn">
+          <span>Create My Itinerary</span>
+          <span class="btn-arrow">→</span>
+        </a>
+        <div class="hero-trust">
+          <div class="trust-avatars">
+            <div class="avatar av1">🧳</div>
+            <div class="avatar av2">🌍</div>
+            <div class="avatar av3">✈️</div>
           </div>
+          <span class="trust-text">Academic Diploma & Production Travel Suite</span>
         </div>
-        <div class="wide actions">
-          <button id="submit-btn" type="submit">Create my itinerary <span>→</span></button>
-          <p class="small">No account required · Estimates are indicative</p>
+      </div>
+    </div>
+
+    <!-- Floating 3D Destination Cards -->
+    <div class="hero-cards-wrapper">
+      <div class="float-card card-tokyo">
+        <div class="fcard-img">🗼</div>
+        <div class="fcard-body">
+          <div class="fcard-title">Tokyo, Japan</div>
+          <div class="fcard-tag">Temples · High-Tech · Gastronomy</div>
+          <div class="fcard-rating">⭐ 4.9 · Verified Transit</div>
         </div>
-      </form>
-      <div id="status" role="status" aria-live="polite"></div>
-    </section>
-    <section id="results" class="results" hidden></section>
-    <footer>TripWise · A learning project built with Python, Flask, HTML, CSS and JavaScript</footer>
-  </main>
+      </div>
+      <div class="float-card card-santorini">
+        <div class="fcard-img">🏖️</div>
+        <div class="fcard-body">
+          <div class="fcard-title">Goa & Vizag</div>
+          <div class="fcard-tag">Beaches · Heritage Forts · Seafood</div>
+          <div class="fcard-rating">⭐ 4.8 · Realistic Budgeting</div>
+        </div>
+      </div>
+      <div class="float-card card-bali">
+        <div class="fcard-img">🌴</div>
+        <div class="fcard-body">
+          <div class="fcard-title">Bali, Indonesia</div>
+          <div class="fcard-tag">Nature · Volcano Treks · Culture</div>
+          <div class="fcard-rating">⭐ 4.7 · OSRM Road Distance</div>
+        </div>
+      </div>
+
+      <div class="float-pill pill-1">
+        <span class="pill-icon">📍</span>
+        <div>
+          <div class="pill-value">Live Routing</div>
+          <div class="pill-label">Road Km & Drive Times</div>
+        </div>
+      </div>
+      <div class="float-pill pill-2">
+        <span class="pill-icon">💰</span>
+        <div>
+          <div class="pill-value">Uncapped</div>
+          <div class="pill-label">No Artificial Budget Capping</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="scroll-cue">
+      <span>Scroll to plan your trip</span>
+      <div class="scroll-arrow"></div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════ FEATURES ═══════════════════════ -->
+  <section class="features-section" id="features">
+    <div class="section-container">
+      <p class="section-eyebrow">WHAT MAKES TRIPWISE 2.0 DIFFERENT</p>
+      <h2 class="section-title">Built for <span class="gradient-word">real-world accuracy</span></h2>
+      <div class="features-grid">
+        <div class="feature-card" data-reveal>
+          <div class="feat-icon">💰</div>
+          <h3>Realistic Expense Budgeting</h3>
+          <p>Calculates independent hotel, food, transport and activity rates. Never falsely claims an unaffordable trip is within budget.</p>
+        </div>
+        <div class="feature-card" data-reveal>
+          <div class="feat-icon">🚆</div>
+          <h3>5-Way Transport Comparison</h3>
+          <p>Compares Flights, Trains, Buses, Outstation Cabs and Private Car with travel durations, fuel/fares and direct booking links.</p>
+        </div>
+        <div class="feature-card" data-reveal>
+          <div class="feat-icon">🗺️</div>
+          <h3>Road Distance & Travel Time</h3>
+          <p>Calculates real driving distance and duration between consecutive attractions with interactive maps & Google directions.</p>
+        </div>
+        <div class="feature-card" data-reveal>
+          <div class="feat-icon">📍</div>
+          <h3>Verified Tourist Attractions</h3>
+          <p>Genuine landmarks with coordinates, opening hours, estimated visit duration, entrance fees and recommended food stops.</p>
+        </div>
+        <div class="feature-card" data-reveal>
+          <div class="feat-icon">🌤️</div>
+          <h3>Live Weather & Packing Advice</h3>
+          <p>Real-time destination weather, 5-day forecasts, rain probability and tailored packing checklists via Open-Meteo.</p>
+        </div>
+        <div class="feature-card" data-reveal>
+          <div class="feat-icon">🤖</div>
+          <h3>AI Travel Assistant</h3>
+          <p>Conversational chatbot that knows your itinerary, answers travel questions, suggests budget cuts, and recommends local dishes.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════ HOW IT WORKS ═══════════════════════ -->
+  <section class="how-section" id="how-it-works">
+    <div class="section-container">
+      <p class="section-eyebrow">EFFORTLESS PLANNING</p>
+      <h2 class="section-title">Plan your dream trip in <span class="gradient-word">3 simple steps</span></h2>
+      <div class="steps-row">
+        <div class="step-card" data-reveal>
+          <div class="step-num">01</div>
+          <div class="step-icon">📍</div>
+          <h3>Enter Route & Preferences</h3>
+          <p>Set your starting location, destination, dates, budget mode, accommodation tier, and travel style.</p>
+        </div>
+        <div class="step-connector"></div>
+        <div class="step-card" data-reveal>
+          <div class="step-num">02</div>
+          <div class="step-icon">🎯</div>
+          <h3>Choose Categories</h3>
+          <p>Select your interests: Beaches, Temples, Historical Forts, Adventure, Food Trails, Shopping, or Family.</p>
+        </div>
+        <div class="step-connector"></div>
+        <div class="step-card" data-reveal>
+          <div class="step-num">03</div>
+          <div class="step-icon">✨</div>
+          <h3>Instant Comprehensive Plan</h3>
+          <p>Receive an interactive itinerary, transportation comparison, budget reconciliation, map, and exportable PDF.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════ PLANNER FORM ═══════════════════════ -->
+  <section class="planner-section" id="planner">
+    <div class="planner-blob blob-a"></div>
+    <div class="planner-blob blob-b"></div>
+
+    <div class="section-container">
+      <p class="section-eyebrow">UPGRADED TRIP ENGINE</p>
+      <h2 class="section-title">Where are you going <span class="gradient-word">next?</span></h2>
+      <p class="section-sub">Enter your starting point, destination, and preferences for an accurate, un-capped travel plan.</p>
+
+      <div class="planner-card glass-card">
+        <form id="planner-form" novalidate>
+
+          <!-- Starting Location & Destination -->
+          <div class="form-row-2">
+            <div class="form-group">
+              <label class="form-label" for="start_location">
+                <span class="label-icon">🛫</span> Starting Location (Origin)
+              </label>
+              <div class="input-wrap">
+                <span class="input-icon">🔍</span>
+                <input id="start_location" name="start_location" type="text" class="form-input"
+                  placeholder="e.g. Visakhapatnam, Hyderabad, Delhi..." value="Visakhapatnam" required autocomplete="off">
+                <button type="button" class="btn-detect-loc" id="btn-detect-location" title="Detect Current Location via GPS">
+                  📍 Detect
+                </button>
+              </div>
+              <span class="input-hint" id="geo-status-hint">Enter your home city or click 'Detect'</span>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="destination">
+                <span class="label-icon">📍</span> Destination City / Region
+              </label>
+              <div class="input-wrap">
+                <span class="input-icon">🏖️</span>
+                <input id="destination" name="destination" type="text" class="form-input"
+                  placeholder="e.g. Goa, Paris, Tokyo, Bali..." value="Goa" required autocomplete="off">
+              </div>
+              <div class="quick-dest-pills">
+                <span class="quick-pill" data-dest="Goa">Goa</span>
+                <span class="quick-pill" data-dest="Visakhapatnam">Visakhapatnam</span>
+                <span class="quick-pill" data-dest="Hyderabad">Hyderabad</span>
+                <span class="quick-pill" data-dest="Paris">Paris</span>
+                <span class="quick-pill" data-dest="Tokyo">Tokyo</span>
+                <span class="quick-pill" data-dest="Bali">Bali</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Dates -->
+          <div class="form-row-2">
+            <div class="form-group">
+              <label class="form-label" for="start_date">
+                <span class="label-icon">📅</span> Departure Date
+              </label>
+              <div class="input-wrap">
+                <span class="input-icon">📆</span>
+                <input type="date" id="start_date" name="start_date" class="form-input" required>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="end_date">
+                <span class="label-icon">📅</span> Return Date
+              </label>
+              <div class="input-wrap">
+                <span class="input-icon">📆</span>
+                <input type="date" id="end_date" name="end_date" class="form-input" required>
+              </div>
+            </div>
+          </div>
+
+          <!-- Budget, Budget Type & Currency -->
+          <div class="form-row-3">
+            <div class="form-group">
+              <label class="form-label" for="budget">
+                <span class="label-icon">💰</span> Available Budget
+              </label>
+              <div class="input-wrap">
+                <span class="input-icon" id="currency-symbol">₹</span>
+                <input type="number" id="budget" name="budget" class="form-input budget-input" min="1" step="1"
+                  value="25000" required>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="budget_type">
+                <span class="label-icon">📊</span> Budget Calculation Mode
+              </label>
+              <div class="input-wrap select-wrap">
+                <span class="input-icon">⚖️</span>
+                <select id="budget_type" class="form-input form-select">
+                  <option value="total_group">Total Group Budget (All Travellers)</option>
+                  <option value="per_person">Per Person Budget</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="currency">
+                <span class="label-icon">🌐</span> Currency
+              </label>
+              <div class="input-wrap select-wrap">
+                <span class="input-icon">💱</span>
+                <select id="currency" class="form-input form-select">
+                  <option value="INR">INR (₹) — Indian Rupee</option>
+                  <option value="USD">USD ($) — US Dollar</option>
+                  <option value="EUR">EUR (€) — Euro</option>
+                  <option value="GBP">GBP (£) — British Pound</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Travelers & Preferences -->
+          <div class="form-row-4">
+            <div class="form-group">
+              <label class="form-label" for="travelers">
+                <span class="label-icon">👥</span> Travellers
+              </label>
+              <div class="traveler-counter">
+                <button type="button" class="counter-btn" id="dec-travelers" aria-label="Decrease travelers">−</button>
+                <input type="number" id="travelers" name="travelers" class="counter-display" min="1" max="30" value="2"
+                  required readonly>
+                <button type="button" class="counter-btn" id="inc-travelers" aria-label="Increase travelers">+</button>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="travel_preference">
+                <span class="label-icon">🚗</span> Travel Preference
+              </label>
+              <div class="input-wrap select-wrap">
+                <select id="travel_preference" class="form-input form-select">
+                  <option value="budget">Budget (Public Bus / Metro)</option>
+                  <option value="standard" selected>Standard (Cabs / Autos / Scooters)</option>
+                  <option value="luxury">Luxury (Chauffeur AC Car)</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="accommodation_preference">
+                <span class="label-icon">🏨</span> Accommodation
+              </label>
+              <div class="input-wrap select-wrap">
+                <select id="accommodation_preference" class="form-input form-select">
+                  <option value="hostel">Hostel / Dormitory (Budget)</option>
+                  <option value="budget_hotel" selected>Budget Hotel / Guesthouse</option>
+                  <option value="standard_hotel">Standard 3★ Hotel</option>
+                  <option value="luxury_resort">Luxury Resort / 5★ Hotel</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="food_preference">
+                <span class="label-icon">🍽️</span> Food Preference
+              </label>
+              <div class="input-wrap select-wrap">
+                <select id="food_preference" class="form-input form-select">
+                  <option value="street_food">Street Food & Local Thalis</option>
+                  <option value="casual" selected>Casual Dining & Cafes</option>
+                  <option value="fine_dining">Fine Dining & Beach Bistros</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Interests Multi-select -->
+          <div class="form-group full-width interests-group">
+            <label class="form-label">
+              <span class="label-icon">🎯</span> Select Travel Interests <span class="label-hint">(Tailors itinerary attractions)</span>
+            </label>
+            <div class="interests-grid">
+              <label class="interest-chip checked" data-interest="beaches">
+                <input type="checkbox" name="interest" value="beaches" checked>
+                <span class="chip-icon">🏖️</span>
+                <span class="chip-text">Beaches</span>
+                <span class="chip-check">✓</span>
+              </label>
+              <label class="interest-chip checked" data-interest="historical">
+                <input type="checkbox" name="interest" value="historical" checked>
+                <span class="chip-icon">🏛️</span>
+                <span class="chip-text">Historical Places</span>
+                <span class="chip-check">✓</span>
+              </label>
+              <label class="interest-chip checked" data-interest="food">
+                <input type="checkbox" name="interest" value="food" checked>
+                <span class="chip-icon">🍜</span>
+                <span class="chip-text">Food Trails</span>
+                <span class="chip-check">✓</span>
+              </label>
+              <label class="interest-chip checked" data-interest="nature">
+                <input type="checkbox" name="interest" value="nature" checked>
+                <span class="chip-icon">🌿</span>
+                <span class="chip-text">Nature & Parks</span>
+                <span class="chip-check">✓</span>
+              </label>
+              <label class="interest-chip" data-interest="temples">
+                <input type="checkbox" name="interest" value="temples">
+                <span class="chip-icon">🛕</span>
+                <span class="chip-text">Temples & Shrines</span>
+                <span class="chip-check">✓</span>
+              </label>
+              <label class="interest-chip" data-interest="adventure">
+                <input type="checkbox" name="interest" value="adventure">
+                <span class="chip-icon">🧗</span>
+                <span class="chip-text">Adventure Activities</span>
+                <span class="chip-check">✓</span>
+              </label>
+              <label class="interest-chip" data-interest="museums">
+                <input type="checkbox" name="interest" value="museums">
+                <span class="chip-icon">🏛️</span>
+                <span class="chip-text">Museums</span>
+                <span class="chip-check">✓</span>
+              </label>
+              <label class="interest-chip" data-interest="shopping">
+                <input type="checkbox" name="interest" value="shopping">
+                <span class="chip-icon">🛍️</span>
+                <span class="chip-text">Bazaars & Shopping</span>
+                <span class="chip-check">✓</span>
+              </label>
+              <label class="interest-chip" data-interest="family">
+                <input type="checkbox" name="interest" value="family">
+                <span class="chip-icon">👨‍👩‍👧</span>
+                <span class="chip-text">Family Attractions</span>
+                <span class="chip-check">✓</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Submit Button -->
+          <div class="form-group full-width submit-group">
+            <button id="submit-btn" type="submit" class="btn-submit">
+              <span class="btn-text">Generate Intelligent Plan</span>
+              <span class="btn-arrow-icon">→</span>
+              <span class="btn-loader" hidden>
+                <span class="loader-dot"></span>
+                <span class="loader-dot"></span>
+                <span class="loader-dot"></span>
+              </span>
+            </button>
+            <p class="form-disclaimer">⚡ Accurate expenses · Independent calculation · No account required</p>
+          </div>
+
+        </form>
+        <div id="status" role="status" aria-live="polite" class="status-box"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════ RESULTS CONTAINER ═══════════════════════ -->
+  <section id="results" class="results-section" hidden>
+    <div class="section-container" id="results-inner"></div>
+  </section>
+
+  <!-- ═══════════════════════ SAVED TRIPS MODAL ═══════════════════════ -->
+  <div class="modal-overlay" id="saved-trips-modal" hidden>
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>📂 Saved Travel Itineraries</h3>
+        <button class="modal-close-btn" id="close-saved-modal" aria-label="Close modal">×</button>
+      </div>
+      <div class="modal-body" id="saved-trips-list">
+        <p class="empty-state-text">Loading saved trips...</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════ SHARE MODAL ═══════════════════════ -->
+  <div class="modal-overlay" id="share-modal" hidden>
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>🔗 Share Your Trip</h3>
+        <button class="modal-close-btn" id="close-share-modal" aria-label="Close modal">×</button>
+      </div>
+      <div class="modal-body">
+        <p>Anyone with this link can view your itinerary, routes, and budget estimates:</p>
+        <div class="share-input-row">
+          <input type="text" id="share-url-input" class="form-input" readonly>
+          <button type="button" class="btn-copy" id="btn-copy-share-url">📋 Copy Link</button>
+        </div>
+        <div id="copy-status" class="copy-status-hint"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════ AI CHATBOT DRAWER ═══════════════════════ -->
+  <div class="chatbot-drawer" id="chatbot-drawer">
+    <div class="chat-header">
+      <div class="chat-title">
+        <span class="chat-avatar">🤖</span>
+        <div>
+          <h4>TripWise AI Assistant</h4>
+          <span class="chat-status" id="chat-provider-badge">Context-Aware Travel Guide</span>
+        </div>
+      </div>
+      <button class="chat-close-btn" id="close-chat-btn" aria-label="Close chat">×</button>
+    </div>
+
+    <div class="chat-quick-pills">
+      <button class="chat-pill" data-prompt="How can I reduce my trip budget?">💰 Cut Budget</button>
+      <button class="chat-pill" data-prompt="What should I pack for this trip?">🎒 Packing List</button>
+      <button class="chat-pill" data-prompt="What are the best local dishes to try?">🍜 Local Food</button>
+      <button class="chat-pill" data-prompt="Is this destination suitable for families?">👨‍👩‍👧 Family Tips</button>
+      <button class="chat-pill" data-prompt="Suggest a rainy day or indoor activity">🌧️ Rainy Day</button>
+    </div>
+
+    <div class="chat-messages" id="chat-messages">
+      <div class="chat-msg msg-assistant">
+        <div class="msg-bubble">
+          Hello! I'm your TripWise AI Travel Guide. I can answer questions about your destination, help reduce your budget, recommend food stops, and suggest packing tips. Ask me anything!
+        </div>
+      </div>
+    </div>
+
+    <form class="chat-input-row" id="chat-form">
+      <input type="text" id="chat-input" class="chat-input" placeholder="Ask about places, food, packing, or budget..." autocomplete="off">
+      <button type="submit" class="btn-chat-send" id="chat-send-btn" aria-label="Send message">➤</button>
+    </form>
+  </div>
+
+  <!-- Floating Chatbot Toggle Button -->
+  <button class="chat-floating-btn" id="floating-chat-trigger" title="Open AI Travel Assistant">
+    <span class="floating-icon">💬</span>
+    <span class="floating-label">AI Assistant</span>
+  </button>
+
+  <!-- ═══════════════════════ FOOTER ═══════════════════════ -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <a class="nav-logo" href="/">
+          <span class="logo-icon">✈</span>
+          <span class="logo-text">TripWise</span>
+        </a>
+        <p>Academic Diploma & Production Travel Suite. Built with Python, Flask, Leaflet Maps and Modern JavaScript.</p>
+      </div>
+      <div class="footer-links">
+        <a href="#planner">Plan a Trip</a>
+        <a href="#features">Features</a>
+        <a href="#how-it-works">How It Works</a>
+        <a href="javascript:void(0)" id="footer-saved-link">View Saved Trips</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 TripWise Travel Planning System · Verified Calculations & Real Tourist Points</span>
+      <span>Live routing via OSRM · Weather via Open-Meteo</span>
+    </div>
+  </footer>
+
+  <!-- Leaflet Interactive Maps JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <!-- Injected shared trip data if viewing /trip/<id> -->
+  {% if shared_trip_data %}
+  <script>
+    window.INITIAL_SHARED_TRIP = {{ shared_trip_data|safe }};
+    window.INITIAL_SHARED_ID = "{{ shared_trip_id }}";
+  </script>
+  {% endif %}
+
   <script src="{{ url_for('static', filename='app.js') }}"></script>
 </body>
+
 </html>
